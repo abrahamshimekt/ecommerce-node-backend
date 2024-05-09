@@ -15,7 +15,6 @@ stripeRouter.post("/", async (req, res) => {
       }
     }
   );
-
 });
 
 module.exports = stripeRouter;

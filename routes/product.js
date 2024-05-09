@@ -1,7 +1,7 @@
-const  mongoose  =  require("mongoose");
-const  { verifyTokenAndAdmin } = require( "../middleware/verifyToken");
+const mongoose = require("mongoose");
+const { verifyTokenAndAdmin } = require("../middleware/verifyToken");
 const productRouter = require("express").Router();
-const  Product = require ("../models/product");
+const Product = require("../models/product");
 
 productRouter.post("/", verifyTokenAndAdmin, async (req, res) => {
   const newProduct = new Product(req.body);
@@ -23,7 +23,7 @@ productRouter.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    const updateProduct = await  Product.findByIdAndUpdate(
+    const updateProduct = await Product.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
       { new: true },
@@ -57,7 +57,7 @@ productRouter.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 productRouter.get("/find/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    !product && res.status(404).json('product not found');
+    !product && res.status(404).json("product not found");
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json(error);
@@ -87,4 +87,4 @@ productRouter.get("/", async (req, res) => {
   }
 });
 
-module.exports =  productRouter;
+module.exports = productRouter;
