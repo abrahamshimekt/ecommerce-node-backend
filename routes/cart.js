@@ -1,5 +1,6 @@
 const cartRouter = require("express").Router();
 const Cart = require("../models/cart");
+const User = require("../models/user");
 const {
   verifyToken,
   verifyTokenAndAuth,
@@ -13,6 +14,8 @@ cartRouter.post("/", verifyToken, async (req, res) => {
   session.startTransaction();
   try {
     const savedCart = await newCart.save();
+    await User.findByIdAndUpdate(req.body.userId,{$push:{carts:savedCart._id}},{new:true});
+    
     session.commitTransaction();
     session.endSession();
     res.status(201).json(savedCart);
