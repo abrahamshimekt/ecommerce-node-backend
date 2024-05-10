@@ -54,7 +54,9 @@ userRouter.delete("/:id", verifyTokenAndAuth, async (req, res) => {
 
 userRouter.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id)
+      .populate("carts")
+      .populate("orders");
     const userWithoutPassword = user.toObject();
     delete userWithoutPassword.password;
     res.status(200).json(userWithoutPassword);
